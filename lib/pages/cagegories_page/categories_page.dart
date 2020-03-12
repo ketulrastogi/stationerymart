@@ -41,6 +41,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             elevation: 1.0,
           ),
           body: ListView(
+            padding: EdgeInsets.all(16.0),
             children: <Widget>[
               Container(
                   child: FutureBuilder<List<Map<String, dynamic>>>(

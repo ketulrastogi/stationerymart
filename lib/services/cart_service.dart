@@ -110,6 +110,10 @@ class CartService with ChangeNotifier {
 
   Future<List<Map<String, dynamic>>> getSubCategories(String mainCategoryId) async{
 
+    if(mainCategoryId == null || mainCategoryId == ''){
+      mainCategoryId = '1';
+    }
+
     http.Response response = await http.get(
         'http://api.stationerymart.org/api/Home/Subcategorydata?id=$mainCategoryId');
 
