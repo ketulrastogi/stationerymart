@@ -25,7 +25,7 @@ class CartService with ChangeNotifier {
     });
   }
 
-  Future<void> placeOrder(String userId, String name, String email, String phone, String stateId, String districtId, String cityId, String address, String pincode) async{
+  Future<Map<String, dynamic>> placeOrder(String userId, String name, String email, String phone, String stateId, String districtId, String cityId, String address, String pincode) async{
     print('MemberId: $userId');
     print('emailid : $email');
     http.Response response =
@@ -53,6 +53,7 @@ class CartService with ChangeNotifier {
       print('An Error occured while order placing');
     }
     print(body);
+    return body;
   }
 
   // Future<List<Map<String, dynamic>>> getAllProducts() async{

@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stationerymart/pages/home_page/home_page.dart';
 import 'package:stationerymart/services/auth_service.dart';
 import 'package:stationerymart/services/cart_service.dart';
 import 'package:stationerymart/services/location_service.dart';
@@ -368,7 +369,57 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                 print('Pincode : $pincode');
                 print('Address : $address');
 
-                cartService.placeOrder(user["Id"], name, email, phone, selectedState, selectedDistrict, selectedCity, address, pincode);
+                cartService.placeOrder(user["Id"], name, email, phone, selectedState, selectedDistrict, selectedCity, address, pincode).then((data){
+
+                  if(data['Success']){
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context){
+                          return AlertDialog(
+                              title: Text('SUCCESS'),
+                              content: Text('Order is placed succesfully.'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('OK'),
+                                  onPressed: (){
+                                    Navigator.push(context, 
+                                      MaterialPageRoute(
+                                        builder: (context) => HomePage(),
+                                      ),
+                                    );
+                                    // Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                        }
+                      );
+                  }else{
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context){
+                          return AlertDialog(
+                              title: Text('ERROR'),
+                              content: Text(data['Message']),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('OK'),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                        }
+                      );
+                  }
+
+                });
                 
                 // authService.updateUserProfile(
                 //     user['Id'],
