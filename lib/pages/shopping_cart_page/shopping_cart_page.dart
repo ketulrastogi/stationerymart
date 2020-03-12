@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stationerymart/pages/buyer_details_page/buyer_details_page.dart';
+import 'package:stationerymart/pages/home_page/home_page.dart';
 import 'package:stationerymart/services/cart_service.dart';
 
 class ShoppingCartPage extends StatefulWidget {
@@ -16,7 +17,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
     return WillPopScope(
       onWillPop: (){
-        Navigator.pop(context);
+        Navigator.push(context, 
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
         // Navigator.pop(context);
         return;
       },

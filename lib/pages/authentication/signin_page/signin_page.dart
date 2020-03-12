@@ -7,13 +7,13 @@ import 'package:stationerymart/services/auth_service.dart';
 class SignInPage extends StatefulWidget {
   final VoidCallback toggelSignIn;
 
-  const SignInPage({Key key, this.toggelSignIn}) : super(key: key); 
+  const SignInPage({Key key, this.toggelSignIn,})
+      : super(key: key);
   @override
   _SignInPageState createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -30,7 +30,6 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-
     AuthService _authService = Provider.of<AuthService>(context);
 
     return ListView(
@@ -92,14 +91,15 @@ class _SignInPageState extends State<SignInPage> {
                 Container(
                   child: TextFormField(
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Mobile Number',),
-                        keyboardType: TextInputType.number,
-                        onSaved: (value){
-                          setState(() {
-                           _username = value.toString(); 
-                          });
-                        },
+                      border: OutlineInputBorder(),
+                      labelText: 'Mobile Number',
+                    ),
+                    keyboardType: TextInputType.number,
+                    onSaved: (value) {
+                      setState(() {
+                        _username = value.toString();
+                      });
+                    },
                   ),
                 ),
                 SizedBox(
@@ -108,14 +108,15 @@ class _SignInPageState extends State<SignInPage> {
                 Container(
                   child: TextFormField(
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Password',
-                        ),
-                        obscureText: true,
-                        onSaved: (value){
-                          setState(() {
-                           _password = value.toString();
-                          });
-                        },
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                    ),
+                    obscureText: true,
+                    onSaved: (value) {
+                      setState(() {
+                        _password = value.toString();
+                      });
+                    },
                   ),
                 ),
                 SizedBox(
@@ -127,46 +128,70 @@ class _SignInPageState extends State<SignInPage> {
                     child: RaisedButton(
                       color: Theme.of(context).primaryColor,
                       padding: EdgeInsets.symmetric(vertical: 16.0),
-                      child: (_loading) ? 
-                      Center(
-                        child: SizedBox(
-                          height: 28.0,
-                          width: 28.0,
-                          child: CircularProgressIndicator(),),
-                      )
-                      : Text(
-                        'SIGN IN',
-                        style: GoogleFonts.roboto(
-                          textStyle: Theme.of(context).textTheme.title.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                      child: (_loading)
+                          ? Center(
+                              child: SizedBox(
+                                height: 28.0,
+                                width: 28.0,
+                                child: CircularProgressIndicator(),
                               ),
-                        ),
-                      ),
-                      onPressed: (_loading) ? null : () async{
-                        setState(() {
-                         _loading = true; 
-                        });
-                        if(_formKey.currentState.validate()){
-                          _formKey.currentState.save();
-                          // _phoneController.text = '';
-                          // _passwordController.text = '';
-                          _formKey.currentState.reset();
-                          Map<String, dynamic> response = await _authService.signIn(_username, _password);
-                          Map<String, dynamic> userDetails = await _authService.getUserDetails();
-                          setState(() {
-                           _loading = false; 
-                          });
-                          if(response['Success']){
-                            Navigator.push(context, 
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
+                            )
+                          : Text(
+                              'SIGN IN',
+                              style: GoogleFonts.roboto(
+                                textStyle:
+                                    Theme.of(context).textTheme.title.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
                               ),
-                            );
-                          }
-                        }
-                        
-                      },
+                            ),
+                      onPressed: (_loading)
+                          ? null
+                          : () async {
+                              setState(() {
+                                _loading = true;
+                              });
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                // _phoneController.text = '';
+                                // _passwordController.text = '';
+                                _formKey.currentState.reset();
+                                Map<String, dynamic> response =
+                                    await _authService.signIn(
+                                        _username, _password);
+                                Map<String, dynamic> userDetails =
+                                    await _authService.getUserDetails();
+                                setState(() {
+                                  _loading = false;
+                                });
+                                if (response['Success']) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ),
+                                  );
+                                } else {
+                                  Scaffold.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Username or password is incorrect.',
+                                        style: GoogleFonts.roboto(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .subtitle
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                        ),
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
                     ),
                   ),
                 ),

@@ -14,7 +14,7 @@ class CategoryItemWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CategoriesPage(),),
+          MaterialPageRoute(builder: (context) => CategoriesPage(mainCategoryId: id,),),
         );
       },
       child: Card(

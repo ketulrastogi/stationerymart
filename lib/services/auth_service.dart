@@ -51,8 +51,6 @@ class AuthService with ChangeNotifier {
 
   Future<void> updateUserProfile(String userId, String name, String email, String phone, String stateId, String districtId, String cityId, String pincode, String address) async{
 
-    
-
     http.Response response =
         await http.post('http://api.stationerymart.org/api/Profile/UpdateProfileDetail',
           body:{

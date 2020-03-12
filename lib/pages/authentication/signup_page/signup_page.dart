@@ -7,7 +7,7 @@ import 'package:stationerymart/services/auth_service.dart';
 class SignUpPage extends StatefulWidget {
   final VoidCallback toggelSignIn;
 
-  const SignUpPage({Key key, this.toggelSignIn}) : super(key: key);
+  const SignUpPage({Key key, this.toggelSignIn,}) : super(key: key);
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -189,6 +189,22 @@ class _SignUpPageState extends State<SignUpPage> {
                            _loading = false; 
                           });
                           if(response['Success']){
+                            Scaffold.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'User is succesfully registered.',
+                                        style: GoogleFonts.roboto(
+                                          textStyle: Theme.of(context)
+                                              .textTheme
+                                              .subtitle
+                                              .copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                        ),
+                                      ),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
                             Navigator.push(context, 
                               MaterialPageRoute(
                                 builder: (context) => AuthenticationPage(),

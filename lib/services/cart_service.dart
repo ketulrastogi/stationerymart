@@ -28,20 +28,21 @@ class CartService with ChangeNotifier {
   Future<Map<String, dynamic>> placeOrder(String userId, String name, String email, String phone, String stateId, String districtId, String cityId, String address, String pincode) async{
     print('MemberId: $userId');
     print('emailid : $email');
+    print('shipstate : $stateId');
     http.Response response =
         await http.post('http://api.stationerymart.org/api/Cart/PlaceWebOrder',
           body:{
             'MemberId': userId,
             'Name' : name,
             'MobileNo' : phone,
-            
+            'shipstate': stateId,
             'State': stateId,
             'Dist': districtId,
             'City': cityId,
             'Pincode': pincode,
             'SAZipcode': pincode,
             'ShippingAddress': address,
-            'address': address,
+            // 'Address': address,
             'Country': 'India',
             'emailid': email,
           },
@@ -123,8 +124,12 @@ class CartService with ChangeNotifier {
 
   Future<List<Map<String, dynamic>>> getInSubCategories(String subCategoryId) async{
 
+    if(subCategoryId == null){
+      subCategoryId = '5';
+    }
+
     http.Response response = await http.get(
-        'http://api.stationerymart.org/api/Home/Subcategorydata?id=$subCategoryId');
+        'http://api.stationerymart.org/api/Home/InSubcategorydata?id=$subCategoryId');
 
     Map<String, dynamic> body = await json.decode(response.body);
     return [...body['Data']];

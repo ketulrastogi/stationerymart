@@ -36,6 +36,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
               (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData) {
               return ListView.separated(
+                padding: EdgeInsets.all(16.0),
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index){
                   Map<String, dynamic> item = snapshot.data[index];
@@ -78,6 +79,7 @@ class OrderFieldValueContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width/3.4,
       padding: EdgeInsets.all(12.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

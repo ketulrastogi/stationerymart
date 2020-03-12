@@ -12,29 +12,7 @@ class SchoolWiseSearchPage extends StatefulWidget {
 }
 
 class _SchoolWiseSearchPageState extends State<SchoolWiseSearchPage> {
-  List<String> _meals = [
-    "Breakfast1",
-    "Breakfast2",
-    "Lunch1",
-    "Lunch2",
-    "Dinner1",
-    "Dinner2",
-  ];
-
-  List<Map<String, dynamic>> _schools = [
-    {
-      'id': '1',
-      'name': 'New Noble School',
-    },
-    {
-      'id': '2',
-      'name': 'Noble Academy',
-    },
-    {
-      'id': '3',
-      'name': 'Swastik Kidz',
-    },
-  ];
+  
 
   String _selectedSchool;
   String _selectedBoard;

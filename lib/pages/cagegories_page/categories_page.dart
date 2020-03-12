@@ -19,6 +19,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
   String selectedInSubCategory;
 
   @override
+  void initState() {
+    super.initState();
+    
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     CartService cartService = Provider.of<CartService>(context);
@@ -81,7 +87,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 ),
               Container(
                   child: FutureBuilder<List<Map<String, dynamic>>>(
-                      future: cartService.getInSubCategories((selectedSubCategory != null) ? selectedSubCategory : '1'),
+                    initialData: [],
+                      future: cartService.getInSubCategories(selectedSubCategory),
                       builder: (context,
                           AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
                         if (snapshot.data != null) {
@@ -130,10 +137,27 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
             onPressed: () async {
               cartService.getProductsForCategory(selectedInSubCategory).then((data){
+
+                List<Map<String, dynamic>> products = [];
+              data.forEach((product){
+                print(product['offerprice'].toString());
+                products.add(
+                  {
+                    'Id': product['Id'],
+                    'Name': product['Name'],
+                    // 'Price': '10',
+                    'Price': num.parse(product['offerprice']).round().toString(),
+                    'Quantity': '1',
+                    'Selected': false,
+                  }
+                );
+              });
+              print('Products Data : $products');
+
                 Navigator.push(context, 
                   MaterialPageRoute(
                     builder: (context) => PackageItemsPage(
-                      products: data,
+                      products: products,
                     ),
                   ),
                 );

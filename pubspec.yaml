@@ -34,6 +34,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  flutter_launcher_icons: "^0.7.4"
+  
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "StationeryMartLogo512.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -50,51 +57,23 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
    - assets/StationeryMartLogo.jpg
-   - assets/city_onboarding_pink.svg
-   - assets/data.svg
-   - assets/hand.svg
-   - assets/logo.svg
-   - assets/male.svg
-   - assets/female.svg
-   - assets/icons/house.svg
-   - assets/icons/analytics.svg
-   - assets/icons/team.svg
    - assets/icons/contact.svg
    - assets/icons/key.svg
-   - assets/icons/exit.svg
    - assets/icons/book.svg
-   - assets/icons/shoe.svg
    - assets/icons/school_stationary.svg
    - assets/icons/office_stationary.svg
    - assets/icons/other_stationary.svg
    - assets/icons/alarm.svg
-   - assets/icons/clock.svg
-   - assets/icons/couple.svg
-   - assets/icons/classroom.svg
-   - assets/icons/store.svg
-   - assets/icons/job-search.svg
-   - assets/icons/businessman.svg
-   - assets/icons/directory.svg
-   - assets/icons/law-book.svg
-   - assets/icons/skills.svg
-   - assets/icons/scroll.svg
    - assets/icons/right-arrow.svg
-   - assets/icons/toolbox.svg
    - assets/icons/arrows.svg
-   - assets/icons/health.svg
-   - assets/icons/food.svg
-   - assets/icons/entertainment.svg
-   - assets/icons/consultant.svg
-   - assets/icons/office.svg
-   - assets/icons/shop.svg
-   - assets/icons/more.svg
    - assets/icons/menu.svg
+   - assets/icons/shoe.svg
+   - assets/icons/team.svg
    - assets/icons/clipboard.svg
    - assets/icons/terms-and-conditions.svg
    - assets/icons/secure-data.svg
    - assets/icons/logout.svg
    - assets/icons/arrow_back.svg
-   - assets/icons/ngo.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

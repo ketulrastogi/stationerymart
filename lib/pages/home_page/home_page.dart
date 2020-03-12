@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stationerymart/pages/my_orders_page/my_orders_page.dart';
 import 'package:stationerymart/pages/school_wise_search_page/school_wise_search_page.dart';
 import 'package:stationerymart/pages/shopping_cart_page/shopping_cart_page.dart';
 import 'package:stationerymart/pages/user_profile_page/user_profile_page.dart';
+import 'package:stationerymart/services/auth_service.dart';
 import 'package:stationerymart/shared/carousel_slider_widget.dart';
 import 'package:stationerymart/shared/categories_card.dart';
 import 'package:stationerymart/shared/emergency_services_card_widget.dart';
@@ -22,7 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final AuthService authService = Provider.of<AuthService>(context);
+    final AuthService authService = Provider.of<AuthService>(context);
 
     return WillPopScope(
       onWillPop: (){
@@ -93,52 +96,42 @@ class _HomePageState extends State<HomePage> {
             drawer: Drawer(
               child: ListView(
                 children: <Widget>[
-                  UserAccountsDrawerHeader(
-                      accountName: Text(
-                        'Ketul Rastogi',
-                        style: GoogleFonts.roboto(
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .title
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                      accountEmail: Text(
-                        '+919408393331',
-                        style: GoogleFonts.roboto(
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .body1
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                      currentAccountPicture: SvgPicture.asset('assets/male.svg'),
-                      arrowColor: Colors.transparent,
-                      onDetailsPressed: () {},
-                    ),
-                  // ListTile(
-                  //   leading: Container(
-                  //       height: 24.0,
-                  //       width: 24.0,
-                  //       child: SvgPicture.asset('assets/icons/clipboard.svg')),
-                  //   title: Text(
-                  //     'My Profile',
-                  //     style: GoogleFonts.roboto(
-                  //       textStyle: Theme.of(context)
-                  //           .textTheme
-                  //           .subhead
-                  //           .copyWith(color: Colors.blueGrey.shade800),
-                  //     ),
-                  //   ),
-                  //   onTap: (){
-                  //     Navigator.push(context, MaterialPageRoute(
-                  //       builder: (context)=> UserProfilePage(),
-                  //     ),);
-                  //   },
-                  // ),
-                  // Divider(
-                  //   indent: 64.0,
-                  // ),
+                  FutureBuilder<Map<String, dynamic>>(
+                    future: authService.getUserDetails(),
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData){
+                        print(snapshot.data);
+                        return UserAccountsDrawerHeader(
+                          accountName: Text(
+                            snapshot.data['Name'],
+                            style: GoogleFonts.roboto(
+                              textStyle: Theme.of(context)
+                                  .textTheme
+                                  .title
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                          accountEmail: Text(
+                            '+91${snapshot.data['Contact']}',
+                            style: GoogleFonts.roboto(
+                              textStyle: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                          currentAccountPicture: Icon(Icons.account_circle, size: 64.0,color: Colors.white,),
+                          arrowColor: Colors.transparent,
+                          onDetailsPressed: () {},
+                        );
+                      }else{
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    }
+                  ),
+                  
                   ListTile(
                     leading: Container(
                         height: 24.0,

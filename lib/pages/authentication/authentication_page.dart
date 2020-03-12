@@ -8,7 +8,7 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
-
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   bool _signIn = true;
 
   void toggelSignIn(){
@@ -21,7 +21,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: (_signIn) ? SignInPage(toggelSignIn: toggelSignIn,) : SignUpPage(toggelSignIn: toggelSignIn,),
+        body: (_signIn) ? SignInPage(toggelSignIn: toggelSignIn, ) : SignUpPage(toggelSignIn: toggelSignIn,),
       ),
     );
   }
