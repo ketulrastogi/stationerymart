@@ -152,7 +152,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   }
                 );
               });
-              print('Products Data : $products');
 
                 Navigator.push(context, 
                   MaterialPageRoute(

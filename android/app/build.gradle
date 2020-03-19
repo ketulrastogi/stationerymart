@@ -26,10 +26,10 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     signingConfigs {
-        smkey {
-            storeFile file('E:\\Ketul_Rastogi_Data\\KeyStoreData\\androidKeyStore.jks')
+        release {
+            storeFile file('key.jks')
             storePassword 'Initroy@24'
-            keyAlias = 'smkey'
+            keyAlias = 'key'
             keyPassword 'Initroy@24'
         }
     }
@@ -53,7 +53,7 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.smkey
+            signingConfig signingConfigs.release
         }
     }
 }

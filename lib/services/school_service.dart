@@ -4,6 +4,19 @@ import 'package:http/http.dart' as http;
 
 class SchoolService with ChangeNotifier {
 
+  Future<void> registerSchool(String name, String address, String phone) async{
+    http.Response response =
+        await http.post('http://api.stationerymart.org/api/Signup/AddSchool',
+          body:{
+            'Name' : name,
+            'Mobile' : phone,
+            'Address': address,
+            'logo': 'test.jpg',
+          },
+        );
+    Map<String, dynamic> body = await json.decode(response.body);
+    print(body);
+  }
 
   Future<List<Map<String, dynamic>>> getSchools() async {
     http.Response response = await http.get(

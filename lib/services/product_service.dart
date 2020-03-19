@@ -3,44 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 class ProductService with ChangeNotifier {
 
-  List<Map<String, dynamic>> products = [
-      {
-        'id': '23',
-        'name': 'Art and Creativity',
-        'price': '160',
-        'quantity': '1',
-        'selected': true,
-      },
-      {
-        'id': '22',
-        'name': 'My Maths Activity',
-        'price': '135',
-        'quantity': '1',
-        'selected': true,
-      },
-      {
-        'id': '21',
-        'name': 'Rhymes Fable',
-        'price': '85',
-        'quantity': '1',
-        'selected': true,
-      },
-      {
-        'id': '20',
-        'name': 'Colour me',
-        'price': '75',
-        'quantity': '1',
-        'selected': true,
-      },
-      {
-        'id': '19',
-        'name': 'My Picture Dictionary',
-        'price': '124',
-        'quantity': '1',
-        'selected': true,
-      },
-      
-    ];
+  
 
     List<Map<String, dynamic>> _products = [];
     

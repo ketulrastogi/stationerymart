@@ -16,7 +16,6 @@ class AuthService with ChangeNotifier {
         );
 
     Map<String, dynamic> body = await json.decode(response.body);
-    print(body);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString('user', response.body);
     return body;
@@ -35,18 +34,24 @@ class AuthService with ChangeNotifier {
         );
 
     Map<String, dynamic> body = await json.decode(response.body);
-    print(body);
     return body;
   }
 
   Future<Map<String, dynamic>> getUserDetails() async{
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map<String, dynamic> user = {};
+    // await sharedPreferences.setString('user', user.toString());
     String userString = await sharedPreferences.get('user');
-
-    Map<String, dynamic> user = await json.decode(userString);
-
-    return user;
+    
+    print('UserString : $userString');
+    if(userString != null){
+      user = await json.decode(userString);
+      return user;
+    }else{
+      user = {};
+      return user;
+    }
   }
 
   Future<void> updateUserProfile(String userId, String name, String email, String phone, String stateId, String districtId, String cityId, String pincode, String address) async{
@@ -74,5 +79,12 @@ class AuthService with ChangeNotifier {
 
 
   }
+
+  Future<void> signOut() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map<String, dynamic> user = {};
+    await sharedPreferences.setString('user', user.toString());
+  }
+
 
 }

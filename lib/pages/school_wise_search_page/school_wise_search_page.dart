@@ -223,7 +223,6 @@ class _SchoolWiseSearchPageState extends State<SchoolWiseSearchPage> {
                   }
                 );
               });
-              print('Products Data : $products');
               Navigator.push(
                 context,
                 MaterialPageRoute(

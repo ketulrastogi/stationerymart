@@ -5,6 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stationerymart/pages/authentication/authentication_page.dart';
+import 'package:stationerymart/pages/manage_school_page/manage_school_page.dart';
 import 'package:stationerymart/pages/my_orders_page/my_orders_page.dart';
 import 'package:stationerymart/pages/school_wise_search_page/school_wise_search_page.dart';
 import 'package:stationerymart/pages/shopping_cart_page/shopping_cart_page.dart';
@@ -96,42 +98,49 @@ class _HomePageState extends State<HomePage> {
             drawer: Drawer(
               child: ListView(
                 children: <Widget>[
-                  FutureBuilder<Map<String, dynamic>>(
-                    future: authService.getUserDetails(),
-                    builder: (context, snapshot) {
-                      if(snapshot.hasData){
-                        print(snapshot.data);
-                        return UserAccountsDrawerHeader(
-                          accountName: Text(
-                            snapshot.data['Name'],
-                            style: GoogleFonts.roboto(
-                              textStyle: Theme.of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                          accountEmail: Text(
-                            '+91${snapshot.data['Contact']}',
-                            style: GoogleFonts.roboto(
-                              textStyle: Theme.of(context)
-                                  .textTheme
-                                  .body1
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                          currentAccountPicture: Icon(Icons.account_circle, size: 64.0,color: Colors.white,),
-                          arrowColor: Colors.transparent,
-                          onDetailsPressed: () {},
-                        );
-                      }else{
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }
+                  // FutureBuilder<Map<String, dynamic>>(
+                  //   future: authService.getUserDetails(),
+                  //   builder: (context, snapshot) {
+                  //     if(snapshot.hasData){
+                  //       print(snapshot.data);
+                  //       return UserAccountsDrawerHeader(
+                  //         accountName: Text(
+                  //           snapshot.data['Name'],
+                  //           style: GoogleFonts.roboto(
+                  //             textStyle: Theme.of(context)
+                  //                 .textTheme
+                  //                 .title
+                  //                 .copyWith(color: Colors.white),
+                  //           ),
+                  //         ),
+                  //         accountEmail: Text(
+                  //           '+91${snapshot.data['Contact']}',
+                  //           style: GoogleFonts.roboto(
+                  //             textStyle: Theme.of(context)
+                  //                 .textTheme
+                  //                 .body1
+                  //                 .copyWith(color: Colors.white),
+                  //           ),
+                  //         ),
+                  //         currentAccountPicture: Icon(Icons.account_circle, size: 64.0,color: Colors.white,),
+                  //         arrowColor: Colors.transparent,
+                  //         onDetailsPressed: () {},
+                  //       );
+                  //     }else{
+                  //       return Center(
+                  //         child: CircularProgressIndicator(),
+                  //       );
+                  //     }
+                  //   }
+                  // ),
+                  Container(
+                    height: 200.0,
+                    padding: EdgeInsets.all(16.0),
+                    color: Colors.white,
+                    child: Image.asset('assets/StationeryMartLogo.jpg'),
                   ),
-                  
+                  // Divider(
+                  // ),
                   ListTile(
                     leading: Container(
                         height: 24.0,
@@ -149,6 +158,29 @@ class _HomePageState extends State<HomePage> {
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context)=> MyOrdersPage(),
+                      ),);
+                    },
+                  ),
+                  Divider(
+                    indent: 64.0,
+                  ),
+                  ListTile(
+                    leading: Container(
+                        height: 24.0,
+                        width: 24.0,
+                        child: SvgPicture.asset('assets/icons/school.svg')),
+                    title: Text(
+                      'My Schools',
+                      style: GoogleFonts.roboto(
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .subhead
+                            .copyWith(color: Colors.blueGrey.shade800),
+                      ),
+                    ),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=> ManageSchoolPage(),
                       ),);
                     },
                   ),
@@ -188,25 +220,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  Divider(
-                    indent: 64.0,
-                  ),
-                  ListTile(
-                    leading: Container(
-                        height: 24.0,
-                        width: 24.0,
-                        child: SvgPicture.asset(
-                            'assets/icons/terms-and-conditions.svg')),
-                    title: Text(
-                      'Terms & Conditions',
-                      style: GoogleFonts.roboto(
-                        textStyle: Theme.of(context)
-                            .textTheme
-                            .subhead
-                            .copyWith(color: Colors.blueGrey.shade800),
-                      ),
-                    ),
-                  ),
+                  
                   Divider(
                     indent: 64.0,
                   ),
@@ -229,6 +243,14 @@ class _HomePageState extends State<HomePage> {
                     indent: 64.0,
                   ),
                   ListTile(
+                    onTap: () async{
+                      await authService.signOut();
+                      Navigator.push(context, 
+                        MaterialPageRoute(
+                          builder: (context) => AuthenticationPage()
+                        ),
+                      );
+                    },
                     leading: Container(
                         height: 24.0,
                         width: 24.0,
