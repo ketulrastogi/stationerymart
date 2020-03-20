@@ -40,6 +40,7 @@ class CategoryItemWidget extends StatelessWidget {
               ),
               new Container(
                 // padding: EdgeInsets.all(4.0),
+                alignment: Alignment.center,
                 child: Text(
                   title,
                   style: GoogleFonts.roboto(

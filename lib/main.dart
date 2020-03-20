@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stationerymart/pages/authentication/authentication_page.dart';
 import 'package:stationerymart/pages/school_wise_search_page/school_wise_search_page.dart';
@@ -6,37 +7,61 @@ import 'package:stationerymart/services/auth_service.dart';
 import 'package:stationerymart/services/carousel_slider_service.dart';
 import 'package:stationerymart/services/cart_service.dart';
 import 'package:stationerymart/services/location_service.dart';
+import 'package:stationerymart/services/logo_service.dart';
 import 'package:stationerymart/services/product_service.dart';
 import 'package:stationerymart/services/school_service.dart';
 
-
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-          providers: [
-            ChangeNotifierProvider<CarouselSliderService>(
-              create: (context) => CarouselSliderService(),
-            ),
-            ChangeNotifierProvider<AuthService>(
-              create: (context) => AuthService(),
-            ),
-            ChangeNotifierProvider<LocationService>(
-              create: (context) => LocationService(),
-            ),
-            ChangeNotifierProvider<SchoolService>(
-              create: (context) => SchoolService(),
-            ),
-            ChangeNotifierProvider<ProductService>(
-              create: (context) => ProductService(),
-            ),
-            ChangeNotifierProvider<CartService>(
-              create: (context) => CartService(),
-            ),
-          ],
-          child: MaterialApp(
+      providers: [
+        ChangeNotifierProvider<CarouselSliderService>(
+          create: (context) => CarouselSliderService(),
+        ),
+        ChangeNotifierProvider<AuthService>(
+          create: (context) => AuthService(),
+        ),
+        ChangeNotifierProvider<LocationService>(
+          create: (context) => LocationService(),
+        ),
+        ChangeNotifierProvider<SchoolService>(
+          create: (context) => SchoolService(),
+        ),
+        ChangeNotifierProvider<LogoService>(
+          create: (context) => LogoService(),
+        ),
+        ChangeNotifierProvider<ProductService>(
+          create: (context) => ProductService(),
+        ),
+        ChangeNotifierProvider<CartService>(
+          create: (context) => CartService(),
+        ),
+      ],
+      child: MaterialApp(
         title: 'Stationery Mart',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -65,8 +90,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Text('Stationary Mart'),
       ),
-      
     );
   }
 }
