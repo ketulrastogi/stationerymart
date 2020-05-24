@@ -6,6 +6,7 @@ import 'package:stationerymart/pages/school_wise_search_page/school_wise_search_
 import 'package:stationerymart/services/auth_service.dart';
 import 'package:stationerymart/services/carousel_slider_service.dart';
 import 'package:stationerymart/services/cart_service.dart';
+import 'package:stationerymart/services/category_service.dart';
 import 'package:stationerymart/services/location_service.dart';
 import 'package:stationerymart/services/logo_service.dart';
 import 'package:stationerymart/services/product_service.dart';
@@ -47,6 +48,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider<LocationService>(
           create: (context) => LocationService(),
+        ),
+        ChangeNotifierProvider<CategoryService>(
+          create: (context) => CategoryService(),
         ),
         ChangeNotifierProvider<SchoolService>(
           create: (context) => SchoolService(),

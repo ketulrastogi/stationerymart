@@ -16,8 +16,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     CartService cartService = Provider.of<CartService>(context);
 
     return WillPopScope(
-      onWillPop: (){
-        Navigator.push(context, 
+      onWillPop: () {
+        Navigator.push(
+          context,
           MaterialPageRoute(
             builder: (context) => HomePage(),
           ),
@@ -25,14 +26,15 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         // Navigator.pop(context);
         return;
       },
-          child: SafeArea(
+      child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
             title: Text(
               'Shopping Cart',
               style: GoogleFonts.roboto(
                 textStyle: Theme.of(context).textTheme.headline.copyWith(
-                    color: Colors.blueGrey.shade900, fontWeight: FontWeight.bold),
+                    color: Colors.blueGrey.shade900,
+                    fontWeight: FontWeight.bold),
               ),
             ),
             titleSpacing: 4.0,
@@ -46,40 +48,62 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               future: cartService.getCartProducts(),
               builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
                 if (snapshot.hasData) {
-                  return ListView.separated(
-                    itemCount: [...snapshot.data['Data']].length,
-                    itemBuilder: (context, index){
-                      return ListTile(
-                        leading: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () async {
-                            await cartService.deleteCartItem([...snapshot.data['Data']][index]['Id']);
-                            setState(() {});
-                          },
-                        ),
-                        title: Text([...snapshot.data['Data']][index]['Name'],
-                          style: GoogleFonts.roboto(
-                    textStyle: Theme.of(context).textTheme.subhead.copyWith(
-                          color: Colors.blueGrey.shade900,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                        ),
-                        subtitle: Text(
-                            'Quantity : ${[...snapshot.data['Data']][index]['quetity']}    Price : ${[...snapshot.data['Data']][index]['totalprice']}',
-                              style: GoogleFonts.roboto(
-                    textStyle: Theme.of(context).textTheme.subtitle.copyWith(
-                          color: Colors.blueGrey.shade700,
-                          // fontWeight: FontWeight.bold,
-                        ),
-                  ),
+                  if (snapshot.data.length == 0) {
+                    return Center(
+                      child: Text('Shopping cart is empty'),
+                    );
+                  } else {
+                    return ListView.separated(
+                      itemCount: [...snapshot.data['Data']].length,
+                      itemBuilder: (context, index) {
+                        Map<String, dynamic> data =
+                            [...snapshot.data['Data']][index];
+                        return ListTile(
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () async {
+                              await cartService.deleteCartItem(data['Id']);
+                              setState(() {});
+                            },
+                          ),
+                          leading: Container(
+                            height: 64.0,
+                            width: 64.0,
+                            child: Image.network(
+                              (data.containsKey('Images') &&
+                                      data['Images'].length > 0 &&
+                                      data['Images'][0].containsKey('Image'))
+                                  ? data['Images'][0]
+                                  : 'http://stationerymart.org/upload/Websetting/Header/175Stationery%20Mart.jpg',
                             ),
-                      );
-                    },
-                    separatorBuilder: (context, index){
-                      return Divider();
-                    },
-                  );
+                          ),
+                          title: Text(
+                            data['Name'],
+                            style: GoogleFonts.roboto(
+                              textStyle:
+                                  Theme.of(context).textTheme.subhead.copyWith(
+                                        color: Colors.blueGrey.shade900,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                            ),
+                          ),
+                          subtitle: Text(
+                            'Quantity : ${data['quetity']}    Price : ${data['totalprice']}',
+                            style: GoogleFonts.roboto(
+                              textStyle:
+                                  Theme.of(context).textTheme.subtitle.copyWith(
+                                        color: Colors.blueGrey.shade700,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                            ),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                    );
+                  }
                 } else {
                   return Center(
                     child: CircularProgressIndicator(),
@@ -131,9 +155,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                               } else {
                                 return Center(
                                   child: Container(
-                                      width: 24.0,
-                                      height: 24.0,
-                                      child: CircularProgressIndicator(),),
+                                    width: 24.0,
+                                    height: 24.0,
+                                    child: CircularProgressIndicator(),
+                                  ),
                                 );
                               }
                             }),
@@ -153,13 +178,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                       ),
                     ),
                     onPressed: () {
-
-                      Navigator.push(context, 
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
                           builder: (context) => BuyerDetailsPage(),
                         ),
                       );
-
                     },
                   ),
                 ),

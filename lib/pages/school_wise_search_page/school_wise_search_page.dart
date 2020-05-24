@@ -12,8 +12,6 @@ class SchoolWiseSearchPage extends StatefulWidget {
 }
 
 class _SchoolWiseSearchPageState extends State<SchoolWiseSearchPage> {
-  
-
   String _selectedSchool;
   String _selectedBoard;
   String _selectedMedium;
@@ -209,25 +207,29 @@ class _SchoolWiseSearchPageState extends State<SchoolWiseSearchPage> {
             color: Theme.of(context).primaryColor,
             onPressed: () async {
               List<Map<String, dynamic>> data =
-                  await _productService.getSchoolWiseProducts(
-                      _selectedSchool, _selectedBoard, _selectedMedium, _selectedStandard);
+                  await _productService.getSchoolWiseProducts(_selectedSchool,
+                      _selectedBoard, _selectedMedium, _selectedStandard);
               List<Map<String, dynamic>> products = [];
-              data.forEach((product){
-                products.add(
-                  {
-                    'Id': product['Id'],
-                    'Name': product['Name'],
-                    'Price': product['Price'],
-                    'Quantity': '1',
-                    'Selected': true,
-                  }
-                );
+              data.forEach((product) {
+                products.add({
+                  'Id': product['Id'],
+                  'Name': product['Name'],
+                  'Price': product['Price'],
+                  'Image': (product.containsKey('Images') &&
+                          product['Images'].length > 0 &&
+                          product['Images'][0].containsKey('Image'))
+                      ? product['Images'][0]
+                      : 'http://stationerymart.org/upload/Websetting/Header/175Stationery%20Mart.jpg',
+                  'Quantity': '1',
+                  'Selected': true,
+                });
               });
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => PackageItemsPage(
                     products: products,
+                    isWebProduct: false,
                   ),
                 ),
               );

@@ -7,8 +7,10 @@ import 'package:stationerymart/services/cart_service.dart';
 
 class PackageItemsPage extends StatefulWidget {
   final List<Map<String, dynamic>> products;
+  final bool isWebProduct;
 
-  const PackageItemsPage({Key key, this.products}) : super(key: key);
+  const PackageItemsPage({Key key, this.products, this.isWebProduct})
+      : super(key: key);
   @override
   _PackageItemsPageState createState() => _PackageItemsPageState();
 }
@@ -21,11 +23,11 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
   void initState() {
     super.initState();
     // products.addAll([...widget.products]);
-    print('widget products : ${widget.products}');
+    // print('widget products : ${widget.products}');
     widget.products.forEach((product) {
       products.add(product);
     });
-    print('products : $products');
+    // print('products : $products');
   }
 
   increaseQuantity(Map<String, dynamic> product) {
@@ -44,12 +46,18 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
             (int.parse(products[index]['Quantity']) - 1).toString();
         // products[index]['price'] = (int.parse(widget.products[index]['price']) * int.parse(products[index]['quantity'])).toString();
       });
+    } else if (int.parse(products[index]['Quantity']) == 1) {
+      setState(() {
+        _selected = false;
+        product['Selected'] = false;
+        products[index]['Quantity'] =
+            (int.parse(products[index]['Quantity']) - 1).toString();
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     CartService cartService = Provider.of<CartService>(context);
 
     return SafeArea(
@@ -71,7 +79,7 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
         ),
         body: ListView.separated(
           itemCount: products.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             Map<String, dynamic> product = products[index];
             String _id;
             String _name;
@@ -85,15 +93,22 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
             _quantity = product['Quantity'];
             _selected = product['Selected'];
 
+            print(product);
+
             return ListTile(
-              leading: Checkbox(
-                value: _selected,
-                onChanged: (bool value) {
-                  setState(() {
-                    _selected = value;
-                    product['Selected'] = value;
-                  });
-                },
+              // leading: Checkbox(
+              //   value: _selected,
+              //   onChanged: (bool value) {
+              //     setState(() {
+              //       _selected = value;
+              //       product['Selected'] = value;
+              //     });
+              //   },
+              // ),
+              leading: Container(
+                height: 64.0,
+                width: 64.0,
+                child: Image.network(product['Image']),
               ),
               title: Text(
                 product['Name'],
@@ -105,7 +120,7 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
                 ),
               ),
               subtitle: Text(
-                'Price : ${(int.parse(product['Price']) * int.parse(product['Quantity'])).toString()}',
+                'Price : ${(int.parse(product['Price']))}',
                 style: GoogleFonts.roboto(
                   textStyle: Theme.of(context).textTheme.subtitle.copyWith(
                         color: Colors.blueGrey.shade700,
@@ -115,59 +130,69 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
               ),
               trailing: Container(
                 width: 80.0,
-                child: Row(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {
-                        increaseQuantity(product);
-                      },
-                      child: Container(
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
-                        padding: EdgeInsets.all(0.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(24.0),
-                        ),
+                child: (_quantity == '0')
+                    ? Checkbox(
+                        value: _selected,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _selected = value;
+                            product['Selected'] = value;
+                            increaseQuantity(product);
+                          });
+                        },
+                      )
+                    : Row(
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              increaseQuantity(product);
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                              padding: EdgeInsets.all(0.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(24.0),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6.0,
+                          ),
+                          Container(
+                            width: 16.0,
+                            child: Center(
+                              child: Text(_quantity),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6.0,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              decreaseQuantity(product);
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.white,
+                              ),
+                              padding: EdgeInsets.all(0.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(24.0),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(
-                      width: 6.0,
-                    ),
-                    Container(
-                      width: 16.0,
-                      child: Center(
-                        child: Text(_quantity),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 6.0,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        decreaseQuantity(product);
-                      },
-                      child: Container(
-                        child: Icon(
-                          Icons.remove,
-                          color: Colors.white,
-                        ),
-                        padding: EdgeInsets.all(0.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(24.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ),
             );
           },
-          
-          separatorBuilder: (context, index){
+          separatorBuilder: (context, index) {
             return Divider();
           },
         ),
@@ -185,36 +210,39 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
           // shape: RoundedRectangleBorder(
           //     borderRadius: BorderRadius.circular(8.0)),
           color: Theme.of(context).primaryColor,
-          onPressed: () async{
+          onPressed: () async {
             // print('Error Printing');
             // print('Products : $products');
-
-            await cartService.addToCart(widget.products);
+            if (widget.isWebProduct) {
+              await cartService.addToWebCart(widget.products);
+            } else {
+              await cartService.addToCart(widget.products);
+            }
 
             showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (context){
-                          return AlertDialog(
-                              title: Text('SUCCESS'),
-                              content: Text('Products are added to cart succesfully.'),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('OK'),
-                                  onPressed: (){
-                                    Navigator.push(context, 
-                                      MaterialPageRoute(
-                                        builder: (context) => ShoppingCartPage(),
-                                      ),
-                                    );
-                                    // Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                        }
-                      );
+                context: context,
+                barrierDismissible: true,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('SUCCESS'),
+                    content: Text('Products are added to cart succesfully.'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ShoppingCartPage(),
+                            ),
+                          );
+                          // Navigator.pop(context);
+                          // Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                });
           },
         ),
       ),

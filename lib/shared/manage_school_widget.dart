@@ -30,7 +30,7 @@ class ManageSchoolWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Register Your School',
+                      'School Wise Search',
                       style: GoogleFonts.roboto(
                         textStyle: Theme.of(context).textTheme.subhead.copyWith(
                             color: Colors.blueGrey.shade900,

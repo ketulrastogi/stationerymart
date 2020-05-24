@@ -61,13 +61,23 @@ class _UserProfilePageState extends State<UserProfilePage> {
               builder:
                   (context, AsyncSnapshot<Map<String, dynamic>> userSnapshot) {
                 if (userSnapshot.hasData) {
-
-
-                  nameController.text = (userSnapshot.data['Name'] != null) ? userSnapshot.data['Name'] : '';
-                  emailController.text = (userSnapshot.data['Email'] != null) ? userSnapshot.data['Email'] : '';
-                  phoneController.text = (userSnapshot.data['Contact'] != null) ? userSnapshot.data['Contact'] : '';
-                  pincodeController.text = (userSnapshot.data['Pincode'] != null) ? userSnapshot.data['Pincode'] : '';
-                  addressController.text = (userSnapshot.data['Address'] != null) ? userSnapshot.data['Address'] : '';
+                  nameController.text = (userSnapshot.data['Name'] != null)
+                      ? userSnapshot.data['Name']
+                      : '';
+                  emailController.text = (userSnapshot.data['Email'] != null)
+                      ? userSnapshot.data['Email']
+                      : '';
+                  phoneController.text = (userSnapshot.data['Contact'] != null)
+                      ? userSnapshot.data['Contact']
+                      : '';
+                  pincodeController.text =
+                      (userSnapshot.data['Pincode'] != null)
+                          ? userSnapshot.data['Pincode']
+                          : '';
+                  addressController.text =
+                      (userSnapshot.data['Address'] != null)
+                          ? userSnapshot.data['Address']
+                          : '';
 
                   return ListView(
                     padding: EdgeInsets.all(16.0),
@@ -85,7 +95,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               name = value;
                             });
                           },
-                          
                         ),
                       ),
                       SizedBox(
@@ -220,13 +229,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                   hintText: 'Select City',
                                   value: selectedCity,
                                   onSaved: (value) {
-                                     setState(() {
+                                    setState(() {
                                       selectedCity = value;
                                     });
                                   },
                                   onChanged: (value) {
                                     print('OnChanged');
-                                    
+
                                     setState(() {
                                       selectedCity = value;
                                     });
@@ -254,11 +263,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               AsyncSnapshot<List<Map<String, dynamic>>>
                                   citySnapshot) {
                             if (citySnapshot.hasData) {
-                              
-                              pincode =
-                                  (citySnapshot.data[0]['Name'] != null)
-                                      ? citySnapshot.data[0]['Name']
-                                      : '';
+                              pincode = (citySnapshot.data[0]['Name'] != null)
+                                  ? citySnapshot.data[0]['Name']
+                                  : '';
                               return Container(
                                 // child: TextFormField(
                                 //   decoration: InputDecoration(
@@ -275,32 +282,37 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade200,
                                   // borderRadius: BorderRadius.only(topLeft: Radius.circular(4.0), topRight: Radius.circular(4.0),),
-                                
-                                border: Border(
-                                  bottom: BorderSide(width: 1.0,color: Colors.black54),
-                                  
-                                ),
+
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        width: 1.0, color: Colors.black54),
+                                  ),
                                 ),
                                 child: Container(
                                   padding: EdgeInsets.all(12.0),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: <Widget>[
-                                      Text('Pincode',
-                                        style: Theme.of(context).textTheme.body1.copyWith(
-                                          color: Colors.grey.shade800,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w300,
-                                        ),
+                                      Text(
+                                        'Pincode',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .body1
+                                            .copyWith(
+                                              color: Colors.grey.shade800,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.w300,
+                                            ),
                                       ),
-                                      Text((citySnapshot.data[0]['Name'] != null)
+                                      Text(
+                                        (citySnapshot.data[0]['Name'] != null)
                                             ? citySnapshot.data[0]['Name']
                                             : '',
-                                            style: TextStyle(
-                                              color: Colors.black
-                                            ),
-                                            ),
+                                        style: TextStyle(color: Colors.black),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -358,68 +370,60 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
             ),
             onPressed: () async {
-                    
-                    // if (_formKey.currentState.validate()) {
-                    //   _formKey.currentState.save();
-                      // _phoneController.text = '';
-                      // _passwordController.text = '';
-                      
-                      
-                      SharedPreferences sharedPreferences =
-                          await SharedPreferences.getInstance();
-                      String userString = await sharedPreferences.get('user');
+              // if (_formKey.currentState.validate()) {
+              //   _formKey.currentState.save();
+              // _phoneController.text = '';
+              // _passwordController.text = '';
 
-                      name = nameController.text;
-                      email = emailController.text;
-                      phone = phoneController.text;
-                      address = addressController.text;
+              SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              String userString = await sharedPreferences.get('user');
 
-                      Map<String, dynamic> user = await json.decode(userString);
-                      
+              name = nameController.text;
+              email = emailController.text;
+              phone = phoneController.text;
+              address = addressController.text;
 
+              Map<String, dynamic> user = await json.decode(userString);
 
-                      locationService.getPincode(
-                              (selectedCity != null) ? selectedCity : '2').then((data){
+              locationService
+                  .getPincode((selectedCity != null) ? selectedCity : '2')
+                  .then((data) {
+                pincode = data[0]['Name'];
 
-                                pincode = data[0]['Name'];
+                print('Submitted Data');
+                print('userId : ${user['Data'][0]["Id"]}');
+                print('Name : $name');
+                print('Email : $email');
+                print('Phone : $phone');
+                print('State : $selectedState');
+                print('District : $selectedDistrict');
+                print('City : $selectedCity');
+                print('Pincode : $pincode');
+                print('Address : $address');
 
-                                print('Submitted Data');
-                      print('userId : $user["Id"]');
-                      print('Name : $name');
-                      print('Email : $email');
-                      print('Phone : $phone');
-                      print('State : $selectedState');
-                      print('District : $selectedDistrict');
-                      print('City : $selectedCity');
-                      print('Pincode : $pincode');
-                      print('Address : $address');
+                authService.updateUserProfile(
+                    user['Data'][0]['Id'],
+                    name,
+                    email,
+                    phone,
+                    selectedState,
+                    selectedDistrict,
+                    selectedCity,
+                    pincode,
+                    address);
+              });
 
-
-                      authService.updateUserProfile(
-                          user['Id'],
-                          name,
-                          email,
-                          phone,
-                          selectedState,
-                          selectedDistrict,
-                          selectedCity,
-                          pincode,
-                          address);
-
-                              });
-
-
-                      
-                      // _formKey.currentState.reset();
-                      // if(response['Success']){
-                      //   Navigator.push(context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => AuthenticationPage(),
-                      //     ),
-                      //   );
-                      // }
-                    // }
-                  },
+              // _formKey.currentState.reset();
+              // if(response['Success']){
+              //   Navigator.push(context,
+              //     MaterialPageRoute(
+              //       builder: (context) => AuthenticationPage(),
+              //     ),
+              //   );
+              // }
+              // }
+            },
           ),
         ),
       ),

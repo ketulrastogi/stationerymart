@@ -13,7 +13,6 @@ class AllProductListPage extends StatefulWidget {
 }
 
 class _AllProductListPageState extends State<AllProductListPage> {
-
   bool _selected = false;
   int total = 0;
   List<Map<String, dynamic>> products = [];
@@ -49,7 +48,6 @@ class _AllProductListPageState extends State<AllProductListPage> {
 
   @override
   Widget build(BuildContext context) {
-
     CartService cartService = Provider.of<CartService>(context);
 
     return SafeArea(
@@ -71,7 +69,7 @@ class _AllProductListPageState extends State<AllProductListPage> {
         ),
         body: ListView.separated(
           itemCount: products.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             Map<String, dynamic> product = products[index];
             String _id;
             String _name;
@@ -166,8 +164,7 @@ class _AllProductListPageState extends State<AllProductListPage> {
               ),
             );
           },
-          
-          separatorBuilder: (context, index){
+          separatorBuilder: (context, index) {
             return Divider();
           },
         ),
@@ -185,36 +182,36 @@ class _AllProductListPageState extends State<AllProductListPage> {
           // shape: RoundedRectangleBorder(
           //     borderRadius: BorderRadius.circular(8.0)),
           color: Theme.of(context).primaryColor,
-          onPressed: () async{
+          onPressed: () async {
             // print('Error Printing');
             // print('Products : $products');
 
-            await cartService.addToCart(widget.products);
+            await cartService.addToWebCart(widget.products);
 
             showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (context){
-                          return AlertDialog(
-                              title: Text('SUCCESS'),
-                              content: Text('Products are added to cart succesfully.'),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('OK'),
-                                  onPressed: (){
-                                    Navigator.push(context, 
-                                      MaterialPageRoute(
-                                        builder: (context) => ShoppingCartPage(),
-                                      ),
-                                    );
-                                    // Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                        }
-                      );
+                context: context,
+                barrierDismissible: true,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('SUCCESS'),
+                    content: Text('Products are added to cart succesfully.'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ShoppingCartPage(),
+                            ),
+                          );
+                          // Navigator.pop(context);
+                          // Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                });
           },
         ),
       ),

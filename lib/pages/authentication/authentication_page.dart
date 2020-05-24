@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stationerymart/pages/authentication/phone_otp_page/phone_otp_page.dart';
 import 'package:stationerymart/pages/authentication/signin_page/signin_page.dart';
 import 'package:stationerymart/pages/authentication/signup_page/signup_page.dart';
 import 'package:stationerymart/pages/home_page/home_page.dart';
@@ -37,16 +38,16 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             print(snapshot.hasData);
             print(snapshot.data);
             print('Snapshot.data : ${snapshot.data}');
-            if(snapshot.hasData){
+            if (snapshot.hasData) {
               if (snapshot.data != null) {
-                  if( snapshot.data.containsKey('Id')){
-                    return HomePage();
-                  }else{
-                    return SafeArea(
+                if (snapshot.data.containsKey('Id')) {
+                  return HomePage();
+                } else {
+                  return SafeArea(
                     child: Scaffold(
                       backgroundColor: Colors.white,
                       body: (_signIn)
-                          ? SignInPage(
+                          ? PhoneOtpPages(
                               toggelSignIn: toggelSignIn,
                             )
                           : SignUpPage(
@@ -54,31 +55,28 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                             ),
                     ),
                   );
-                  }
-                  
+                }
               } else {
                 return SafeArea(
-                    child: Scaffold(
-                      backgroundColor: Colors.white,
-                      body: (_signIn)
-                          ? SignInPage(
-                              toggelSignIn: toggelSignIn,
-                            )
-                          : SignUpPage(
-                              toggelSignIn: toggelSignIn,
-                            ),
-                    ),
-                  );
+                  child: Scaffold(
+                    backgroundColor: Colors.white,
+                    body: (_signIn)
+                        ? PhoneOtpPages(
+                            toggelSignIn: toggelSignIn,
+                          )
+                        : SignUpPage(
+                            toggelSignIn: toggelSignIn,
+                          ),
+                  ),
+                );
               }
-            }else{
+            } else {
               return Scaffold(
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),
               );
             }
-              
-            
           }),
     );
   }

@@ -11,6 +11,7 @@ import 'package:stationerymart/pages/school_wise_search_page/school_wise_search_
 import 'package:stationerymart/pages/shopping_cart_page/shopping_cart_page.dart';
 import 'package:stationerymart/services/auth_service.dart';
 import 'package:stationerymart/services/logo_service.dart';
+import 'package:stationerymart/shared/all_categories_card_widget.dart';
 import 'package:stationerymart/shared/carousel_slider_widget.dart';
 import 'package:stationerymart/shared/categories_card.dart';
 import 'package:stationerymart/shared/manage_school_widget.dart';
@@ -95,18 +96,18 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.white,
             elevation: 1.0,
           ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SchoolWiseSearchPage()),
-              );
-            },
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   child: Icon(
+          //     Icons.search,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => SchoolWiseSearchPage()),
+          //     );
+          //   },
+          // ),
           drawer: Drawer(
             child: ListView(
               children: <Widget>[
@@ -239,20 +240,12 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 8.0,
               ),
-              // ViewAllProductsWidget(),
-              SizedBox(
-                height: 8.0,
-              ),
-              CategoriesCardWidget(),
-              SizedBox(
-                height: 8.0,
-              ),
               InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ManageSchoolPage(),
+                      builder: (context) => SchoolWiseSearchPage(),
                     ),
                   );
                 },
@@ -261,6 +254,15 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 16.0,
               ),
+              AllCategoriesCardWidget(),
+              SizedBox(
+                height: 8.0,
+              ),
+              // CategoriesCardWidget(),
+              // SizedBox(
+              //   height: 8.0,
+              // ),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -283,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                             AsyncSnapshot<List<Map<String, dynamic>>>
                                 snapshot) {
                           if (snapshot.hasData) {
-                            return ListView.builder(
+                            return ListView.separated(
                               itemCount: snapshot.data.length,
                               scrollDirection: Axis.horizontal,
                               padding: EdgeInsets.all(8.0),
@@ -291,24 +293,26 @@ class _HomePageState extends State<HomePage> {
                                 return Container(
                                   height: 100.0,
                                   width: 100.0,
-                                  margin: EdgeInsets.only(right: 8.0),
+
                                   // padding: EdgeInsets.all(4.0),
                                   child: Card(
+                                    margin: EdgeInsets.all(0.0),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        child: Image.network(
-                                          snapshot.data[index]['image'],
-                                          fit: BoxFit.fill,
-                                        ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      child: Image.network(
+                                        snapshot.data[index]['image'],
+                                        fit: BoxFit.fill,
                                       ),
                                     ),
                                   ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  width: 4.0,
                                 );
                               },
                             );
