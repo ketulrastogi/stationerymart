@@ -93,7 +93,7 @@ class _PackageItemsPageState extends State<PackageItemsPage> {
             _quantity = product['Quantity'];
             _selected = product['Selected'];
 
-            print(product);
+            // print(product);
 
             return ListTile(
               // leading: Checkbox(

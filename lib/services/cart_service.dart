@@ -9,13 +9,13 @@ class CartService with ChangeNotifier {
     Map<String, dynamic> user = json.decode(sharedPreferences.get('user'));
     print(user);
     products.forEach((product) {
-      print(product);
       if (product['Selected']) {
         http.post('http://api.stationerymart.org/api/Pro/Addcart', body: {
           'memberid': user['Data'][0]['Id'],
           'Productid': product['Id'],
           'quetity': product['Quantity']
         });
+        print(product);
       } else {
         print('product : ${product['Name']} is not selected');
       }
@@ -26,23 +26,76 @@ class CartService with ChangeNotifier {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map<String, dynamic> user = json.decode(sharedPreferences.get('user'));
     print(user);
+    print('AddToWebCart');
+
+    // http.post('http://api.stationerymart.org/api/Pro/Addwebcart', body: {
+    //       'memberid': user['Data'][0]['Id'],
+    //       'ProductId': products[0]['Id'],
+    //       'quetity': products[0]['Quantity'],
+    //       'color': 'red',
+    //       'size': '32',
+    //     });
+
     products.forEach((product) {
-      print(product);
       if (product['Selected']) {
-        http.post('http://api.stationerymart.org/api/Pro/Addcart', body: {
+        print(
+            'MemberId: ${user['Data'][0]['Id']}, ProductId: ${product['Id']}, Quantity: ${product['Quantity']}');
+        http.post('http://api.stationerymart.org/api/Pro/Addwebcart', body: {
           'memberid': user['Data'][0]['Id'],
-          'Productid': product['Id'],
+          'ProductId': product['Id'],
           'quetity': product['Quantity'],
           'color': 'red',
           'size': '32',
         });
+        // print(product);
       } else {
-        print('product : ${product['Name']} is not selected');
+        // print('product : ${product['Name']} is not selected');
       }
     });
   }
 
   Future<Map<String, dynamic>> placeOrder(
+      String userId,
+      String name,
+      String email,
+      String phone,
+      String stateId,
+      String districtId,
+      String cityId,
+      String address,
+      String pincode) async {
+    print('MemberId: $userId');
+    print('emailid : $email');
+    print('shipstate : $stateId');
+    http.Response response = await http.post(
+      'http://api.stationerymart.org/api/Cart/PlaceOrder',
+      body: {
+        'MemberId': userId,
+        'Name': name,
+        'MobileNo': phone,
+        'shipstate': stateId,
+        'State': stateId,
+        'Dist': districtId,
+        'City': cityId,
+        'Pincode': pincode,
+        'SAZipcode': pincode,
+        'ShippingAddress': address,
+        // 'Address': address,
+        'Country': 'India',
+        'emailid': email,
+      },
+    );
+    Map<String, dynamic> body = await json.decode(response.body);
+    if (body['Success']) {
+      print('Order is placed succesfully');
+    } else {
+      print('An Error occured while order placing');
+    }
+    print(body);
+    return body;
+  }
+
+  Future<Map<String, dynamic>> placeWebOrder(
       String userId,
       String name,
       String email,
@@ -95,6 +148,19 @@ class CartService with ChangeNotifier {
     print('UserID : ${user['Data'][0]['Id']}');
     http.Response response = await http.get(
         'http://api.stationerymart.org/api/Cart/Cartdata?mid=${user['Data'][0]['Id']}');
+
+    Map<String, dynamic> body = await json.decode(response.body);
+
+    return body;
+  }
+
+  Future<Map<String, dynamic>> getWebCartProducts() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    Map<String, dynamic> user = json.decode(sharedPreferences.get('user'));
+    print('UserID : ${user['Data'][0]['Id']}');
+    http.Response response = await http.get(
+        'http://api.stationerymart.org/api/Cart/Webcartdata?mid=${user['Data'][0]['Id']}');
 
     Map<String, dynamic> body = await json.decode(response.body);
 

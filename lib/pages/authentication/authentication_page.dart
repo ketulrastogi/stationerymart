@@ -39,8 +39,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             print(snapshot.data);
             print('Snapshot.data : ${snapshot.data}');
             if (snapshot.hasData) {
-              if (snapshot.data != null) {
-                if (snapshot.data.containsKey('Id')) {
+              if (snapshot.data != null &&
+                  snapshot.data.containsKey('Data') &&
+                  snapshot.data['Data'] != null) {
+                if (snapshot.data['Data'][0].containsKey('Id')) {
                   return HomePage();
                 } else {
                   return SafeArea(

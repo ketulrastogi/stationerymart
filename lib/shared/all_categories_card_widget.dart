@@ -176,7 +176,7 @@ class CategoryWidget extends StatelessWidget {
           _cartService.getProductsForCategory(inSubCategory['Id']).then((data) {
             List<Map<String, dynamic>> products = [];
             data.forEach((product) {
-              print('Id: ${product['Id']}, Image: ${product['Images']}');
+              // print('Id: ${product['Id']}, Image: ${product['Images']}');
               products.add({
                 'Id': product['Id'],
                 'Name': product['Name'],

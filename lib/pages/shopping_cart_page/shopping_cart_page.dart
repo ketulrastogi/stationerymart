@@ -6,6 +6,9 @@ import 'package:stationerymart/pages/home_page/home_page.dart';
 import 'package:stationerymart/services/cart_service.dart';
 
 class ShoppingCartPage extends StatefulWidget {
+  // final bool isWebData;
+
+  // const ShoppingCartPage({Key key, this.isWebData}) : super(key: key);
   @override
   _ShoppingCartPageState createState() => _ShoppingCartPageState();
 }

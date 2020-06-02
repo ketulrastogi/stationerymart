@@ -12,6 +12,9 @@ import 'package:stationerymart/services/cart_service.dart';
 import 'package:stationerymart/services/location_service.dart';
 
 class BuyerDetailsPage extends StatefulWidget {
+  final bool isWebData;
+
+  const BuyerDetailsPage({Key key, this.isWebData}) : super(key: key);
   @override
   _BuyerDetailsPageState createState() => _BuyerDetailsPageState();
 }
@@ -369,58 +372,67 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                 print('Pincode : $pincode');
                 print('Address : $address');
 
-                cartService.placeOrder(user["Id"], name, email, phone, selectedState, selectedDistrict, selectedCity, address, pincode).then((data){
-
-                  if(data['Success']){
+                cartService
+                    .placeOrder(
+                  user['Data'][0]["Id"],
+                  name,
+                  email,
+                  phone,
+                  selectedState,
+                  selectedDistrict,
+                  selectedCity,
+                  address,
+                  pincode,
+                )
+                    .then((data) {
+                  if (data['Success']) {
                     showDialog(
                         context: context,
                         barrierDismissible: true,
-                        builder: (context){
+                        builder: (context) {
                           return AlertDialog(
-                              title: Text('SUCCESS'),
-                              content: Text('Order is placed succesfully.'),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('OK'),
-                                  onPressed: (){
-                                    Navigator.push(context, 
-                                      MaterialPageRoute(
-                                        builder: (context) => HomePage(),
-                                      ),
-                                    );
-                                    // Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                        }
-                      );
-                  }else{
+                            title: Text('SUCCESS'),
+                            content: Text('Order is placed succesfully.'),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(),
+                                    ),
+                                  );
+                                  // Navigator.pop(context);
+                                  // Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
                     showDialog(
                         context: context,
                         barrierDismissible: true,
-                        builder: (context){
+                        builder: (context) {
                           return AlertDialog(
-                              title: Text('ERROR'),
-                              content: Text(data['Message']),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('OK'),
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                    // Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                        }
-                      );
+                            title: Text('ERROR'),
+                            content: Text(data['Message']),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  // Navigator.pop(context);
+                                  // Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        });
                   }
-
                 });
-                
+
                 // authService.updateUserProfile(
                 //     user['Id'],
                 //     name,
